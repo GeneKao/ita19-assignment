@@ -7,17 +7,17 @@ Task 1: Given two vectors, use the cross product to create a set of three orthon
 
 __author__ = "Gene Ting-Chun Kao"
 __email__ = "kao@arch.ethz.ch"
-__date__ = "2019"
+__date__ = "29.10.2019"
 
 
 def orthonormal_bases(u, v):
     """
     Generate three base vectors from two vectors
     Args:
-        u: compas.Vector, first vector
-        v: compas.Vector, second vector
+        u: compas.geometry.Vector, first vector
+        v: compas.geometry.Vector, second vector
     Returns:
-        tuple of compas.Vector: three normalised vectors as list
+        tuple of compas.geometry.Vector: three normalised vectors as list
     """
     return u.unitized(), v.unitized(), u.cross(v).unitized()
 
