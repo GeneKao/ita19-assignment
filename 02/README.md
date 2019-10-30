@@ -24,4 +24,5 @@
    
    - solution file [task4.py](task4.py)
    - result visualisation
-   ![img](img/travese_straight.png)
+   
+      ![img](img/travese_straight.png)
