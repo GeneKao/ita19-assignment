@@ -19,14 +19,14 @@ def orthonormal_bases(u, v):
     Returns:
         tuple of compas.geometry.Vector: three normalised vectors as list
     """
-    return u.unitized(), v.unitized(), u.cross(v).unitized()
+    return u.unitized(), u.cross(v).cross(u).unitized(), u.cross(v).unitized()
 
 
 if __name__ == '__main__':
 
     from compas.geometry import Vector
 
-    a = Vector(10, 0, 0)
+    a = Vector(10, 10, 0)
     b = Vector(0, 10, 0)
 
     vectors = orthonormal_bases(a, b)
