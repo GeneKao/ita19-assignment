@@ -1,1 +1,3 @@
 * ita19-assignment
+
+My code solution for the assignment of [[https://github.com/compas-ITA19/ITA19][ITA PhD course 2019]] - Introduction to Computational Research in Architecture, Engineering, Fabrication and Construction
