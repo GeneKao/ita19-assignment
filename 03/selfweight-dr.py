@@ -53,57 +53,79 @@ mesh.set_vertices_attribute('z', 7.0, keys=high)
 boundary = list(mesh.edges_on_boundary())
 mesh.set_edges_attribute('q', 5.0, keys=boundary)
 
-# compile the input for fd_numpy
-xyz = mesh.get_vertices_attributes('xyz')
-edges = list(mesh.edges())
-q = mesh.get_edges_attribute('q')
-loads = mesh.get_vertices_attributes(('px', 'py', 'pz'))
+count = 0
 
-for key in mesh.vertices():
-    if mesh.get_vertex_attribute(key, 'is_fixed'):
-        continue
-    thickness = mesh.get_vertex_attribute(key, 't')
+while True:
+    print('iteration: ', count)
+    # compile the input for fd_numpy
+    xyz = mesh.get_vertices_attributes('xyz')
+    edges = list(mesh.edges())
+    q = mesh.get_edges_attribute('q')
+    loads = mesh.get_vertices_attributes(('px', 'py', 'pz'))
 
-    # compute the vertex area
-    area = mesh.vertex_area(key)
-    # multiply by the local thickness
-    weight = area * thickness
-    # assign to the correct item in the list of loads
-    loads[key][2] = -weight
-    mesh.set_vertex_attributes(key, ('px', 'py', 'pz'), [0, 0, -weight])
+    for key in mesh.vertices():
+        if mesh.get_vertex_attribute(key, 'is_fixed'):
+            continue
 
-xyz, q, f, l, r = numerical.fd_numpy(xyz, edges, fixed, q, loads)
+        thickness = mesh.get_vertex_attribute(key, 't')
+        # compute the vertex area
+        area = mesh.vertex_area(key)
+        # multiply by the local thickness
+        weight = area * thickness
+        # assign to the correct item in the list of loads
+        loads[key][2] = -weight
+        mesh.set_vertex_attributes(key, ('px', 'py', 'pz'), [0, 0, -weight])
 
-# update the data structure
-for key, attr in mesh.vertices(True):
-    attr['x'] = xyz[key][0]
-    attr['y'] = xyz[key][1]
-    attr['z'] = xyz[key][2]
-    attr['rx'] = r[key][0]
-    attr['ry'] = r[key][1]
-    attr['rz'] = r[key][2]
+    xyz, q, f, l, r = numerical.fd_numpy(xyz, edges, fixed, q, loads)
 
-for index, (u, v, attr) in enumerate(mesh.edges(True)):
-    attr['f'] = f[index][0]
+    threshold = 0.01
+    accurate = True
+    # update the data structure
+    for key, attr in mesh.vertices(True):
 
-for key in mesh.vertices():
-    if mesh.get_vertex_attribute(key, 'is_fixed'):
-        continue
+        if attr['x'] - xyz[key][0] < threshold and \
+           attr['y'] - xyz[key][1] < threshold and \
+           attr['z'] - xyz[key][2] < threshold:
+            accurate = accurate and True
+        else:
+            accurate = accurate and False
 
-    # compute the load on the vertex
-    load = loads[key]
-    # compute the forces in the edges connected to the vertex
-    forces = [load]
-    for nbr in mesh.vertex_neighbors(key):
-        # compute the force vector of the connected edge
-        force = [a - b for a, b in zip(mesh.get_vertex_attributes(nbr, 'xyz'), mesh.get_vertex_attributes(key, "xyz"))]
-        length = mesh.get_edge_attribute((key, nbr), 'f')
-        force = scale_vector(normalize_vector(force), length * 2)
-        forces.append(force)
+        attr['x'] = xyz[key][0]
+        attr['y'] = xyz[key][1]
+        attr['z'] = xyz[key][2]
+        attr['rx'] = r[key][0]
+        attr['ry'] = r[key][1]
+        attr['rz'] = r[key][2]
 
-    # sum up the vectors to compute the residual force
-    resultant = sum_vectors(forces)
-    mesh.set_vertex_attributes(key, ('rx', 'ry', 'rz'), resultant)
+    if accurate:
+        break
+
+    for index, (u, v, attr) in enumerate(mesh.edges(True)):
+        attr['f'] = f[index][0]
+
+    for key in mesh.vertices():
+        if mesh.get_vertex_attribute(key, 'is_fixed'):
+            continue
+
+        # compute the load on the vertex
+        load = loads[key]
+        # compute the forces in the edges connected to the vertex
+        forces = [load]
+        for nbr in mesh.vertex_neighbors(key):
+            # compute the force vector of the connected edge
+            force = [a - b for a, b in zip(mesh.get_vertex_attributes(nbr, 'xyz'),
+                                           mesh.get_vertex_attributes(key, "xyz"))]
+            length = mesh.get_edge_attribute((key, nbr), 'f')
+            force = scale_vector(normalize_vector(force), length * 2)
+            forces.append(force)
+
+        # sum up the vectors to compute the residual force
+        resultant = sum_vectors(forces)
+        mesh.set_vertex_attributes(key, ('rx', 'ry', 'rz'), resultant)
+
+    count += 1
+
+print('solution found')
 
 # ==============================================================================
 # Visualise the result
