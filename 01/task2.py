@@ -6,7 +6,7 @@ This is my solution for the task 2
 """
 
 import re
-from task1 import is_ccw
+from .task1 import is_ccw
 
 __author__ = "Gene Ting-Chun Kao"
 __email__ = "kao@arch.ethz.ch"
