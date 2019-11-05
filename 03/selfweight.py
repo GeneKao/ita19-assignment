@@ -41,9 +41,23 @@ mesh.update_default_edge_attributes({
 # ==============================================================================
 
 # set the fixed vertices
+corners = list(mesh.vertices_where({'vertex_degree': 2}))
+mesh.set_vertices_attribute('is_fixed', True, keys=corners)
+fixed = list(mesh.vertices_where({'is_fixed': True}))
+
 # change the z value of the "high" vertices
+high = [0, 35]
+mesh.set_vertices_attribute('z', 7.0, keys=high)
+
 # change the force density of the edges on the boundary
+boundary = list(mesh.edges_on_boundary())
+mesh.set_edges_attribute('q', 5.0, keys=boundary)
+
 # compile the input for fd_numpy
+xyz = mesh.get_vertices_attributes('xyz')
+edges = list(mesh.edges())
+q = mesh.get_edges_attribute('q')
+loads = mesh.get_vertices_attributes(('px', 'py', 'pz'))
 
 for key in mesh.vertices():
     if mesh.get_vertex_attribute(key, 'is_fixed'):
@@ -51,21 +65,42 @@ for key in mesh.vertices():
     thickness = mesh.get_vertex_attribute(key, 't')
 
     # compute the vertex area
+    area = mesh.vertex_area(key)
     # multiply by the local thickness
+    weight = area * thickness
     # assign to the correct item in the list of loads
+    loads[key][2] = -weight
 
 xyz, q, f, l, r = numerical.fd_numpy(xyz, edges, fixed, q, loads)
 
 # update the data structure
+for key, attr in mesh.vertices(True):
+    attr['x'] = xyz[key][0]
+    attr['y'] = xyz[key][1]
+    attr['z'] = xyz[key][2]
+    attr['rx'] = r[key][0]
+    attr['ry'] = r[key][1]
+    attr['rz'] = r[key][2]
+
+for index, (u, v, attr) in enumerate(mesh.edges(True)):
+    attr['f'] = f[index][0]
 
 for key in mesh.vertices():
     if mesh.get_vertex_attribute(key, 'is_fixed'):
         continue
 
     # compute the load on the vertex
+    load = [0.0, 0.0, -weight]
     # compute the forces in the edges connected to the vertex
-    # sum up the vectors to compute the residual force
+    forces = [load]
+    for nbr in mesh.vertex_neighbors(key):
+        # compute the force vector of the connected edge
+        force = [a - b for a, b in zip(mesh.get_vertex_attributes(nbr, 'xyz'), mesh.get_vertex_attributes(key, "xyz"))]
+        length = mesh.get_edge_attribute((key, nbr), 'f')
+        force = scale_vector(normalize_vector(force), length)
+        forces.append(force)
 
+    # sum up the vectors to compute the residual force
     resultant = sum_vectors(forces)
     mesh.set_vertex_attributes(key, ('rx', 'ry', 'rz'), resultant)
 
