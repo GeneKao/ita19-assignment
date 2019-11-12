@@ -1,6 +1,10 @@
 # Structural Design: Assignment 1
 
+> submitted by Gene Ting-Chun Kao (kao@arch.ethz.ch)
+
 ## Part 1: Update selfweight
+
+Solution: [selfweight_dr.py](selfweight_dr.py)
 
 *Use selfweight.py as a starting point for this part of the assignment.*
 
@@ -53,6 +57,8 @@ resultant = sum_vectors(forces)
 ```
 
 ## Part 2: Update cables
+
+Solution: [selfweight_interactive.py](selfweight_interactive.py)
 
 The objective of this part of the assignment is to update the force densities of all edges belonging to a cable at once, rather than updating them one by one.
 
