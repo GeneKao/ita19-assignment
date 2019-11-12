@@ -44,6 +44,7 @@ class Shell(Mesh):
         self.set_edges_attribute('q', 5.0, keys=boundary)
 
         count = 0
+        threshold = 0.001
         while True:
             print('iteration: ', count)
             # compile the input for fd_numpy
@@ -67,17 +68,16 @@ class Shell(Mesh):
 
             xyz, q, f, l, r = numerical.fd_numpy(xyz, edges, fixed, q, loads)
 
-            threshold = 0.01
-            accurate = True
+            terminate = True
             # update the data structure
             for key, attr in self.vertices(True):
 
-                if attr['x'] - xyz[key][0] < threshold and \
-                        attr['y'] - xyz[key][1] < threshold and \
-                        attr['z'] - xyz[key][2] < threshold:
-                    accurate = accurate and True
+                if abs(attr['x'] - xyz[key][0]) > threshold or \
+                        abs(attr['y'] - xyz[key][1]) > threshold or \
+                        abs(attr['z'] - xyz[key][2]) > threshold:
+                    terminate = terminate and False
                 else:
-                    accurate = accurate and False
+                    terminate = terminate and True
 
                 attr['x'] = xyz[key][0]
                 attr['y'] = xyz[key][1]
@@ -86,7 +86,8 @@ class Shell(Mesh):
                 attr['ry'] = r[key][1]
                 attr['rz'] = r[key][2]
 
-            if accurate:
+            if terminate and count >= 2:
+                print('solution found')
                 break
 
             for index, (u, v, attr) in enumerate(self.edges(True)):
@@ -113,8 +114,11 @@ class Shell(Mesh):
                 self.set_vertex_attributes(key, ('rx', 'ry', 'rz'), resultant)
 
             count += 1
+            # put a safety break here
+            if count > 30:
+                print("too many iterations")
+                break
 
-        print('solution found')
 
 # ==============================================================================
 # Main

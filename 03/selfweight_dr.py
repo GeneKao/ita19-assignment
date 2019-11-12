@@ -54,6 +54,7 @@ boundary = list(mesh.edges_on_boundary())
 mesh.set_edges_attribute('q', 5.0, keys=boundary)
 
 count = 0
+threshold = 0.001
 
 while True:
     print('iteration: ', count)
@@ -78,17 +79,18 @@ while True:
 
     xyz, q, f, l, r = numerical.fd_numpy(xyz, edges, fixed, q, loads)
 
-    threshold = 0.01
-    accurate = True
+    terminate = True
     # update the data structure
     for key, attr in mesh.vertices(True):
 
-        if attr['x'] - xyz[key][0] < threshold and \
-           attr['y'] - xyz[key][1] < threshold and \
-           attr['z'] - xyz[key][2] < threshold:
-            accurate = accurate and True
+        # just calculating the moving distance is probably faster then
+        # calculating the residual force and break later.
+        if abs(attr['x'] - xyz[key][0]) > threshold or \
+           abs(attr['y'] - xyz[key][1]) > threshold or \
+           abs(attr['z'] - xyz[key][2]) > threshold:
+            terminate = terminate and False
         else:
-            accurate = accurate and False
+            terminate = terminate and True
 
         attr['x'] = xyz[key][0]
         attr['y'] = xyz[key][1]
@@ -97,7 +99,8 @@ while True:
         attr['ry'] = r[key][1]
         attr['rz'] = r[key][2]
 
-    if accurate:
+    if terminate and count >= 2:
+        print('solution found')
         break
 
     for index, (u, v, attr) in enumerate(mesh.edges(True)):
@@ -116,16 +119,21 @@ while True:
             force = [a - b for a, b in zip(mesh.get_vertex_attributes(nbr, 'xyz'),
                                            mesh.get_vertex_attributes(key, "xyz"))]
             length = mesh.get_edge_attribute((key, nbr), 'f')
-            force = scale_vector(normalize_vector(force), length * 2)
+            force = scale_vector(normalize_vector(force), length)
             forces.append(force)
 
         # sum up the vectors to compute the residual force
         resultant = sum_vectors(forces)
+        print(resultant)
         mesh.set_vertex_attributes(key, ('rx', 'ry', 'rz'), resultant)
 
     count += 1
+    # put a safety break here
+    if count > 30:
+        print("too many iterations")
+        break
 
-print('solution found')
+
 
 # ==============================================================================
 # Visualise the result

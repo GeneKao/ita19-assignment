@@ -98,11 +98,13 @@ for key in mesh.vertices():
         # compute the force vector of the connected edge
         force = [a - b for a, b in zip(mesh.get_vertex_attributes(nbr, 'xyz'), mesh.get_vertex_attributes(key, "xyz"))]
         length = mesh.get_edge_attribute((key, nbr), 'f')
-        force = scale_vector(normalize_vector(force), length * 2)
+        print(length)
+        force = scale_vector(normalize_vector(force), length)
         forces.append(force)
 
     # sum up the vectors to compute the residual force
     resultant = sum_vectors(forces)
+    # print(resultant)
     mesh.set_vertex_attributes(key, ('rx', 'ry', 'rz'), resultant)
 
 # ==============================================================================
