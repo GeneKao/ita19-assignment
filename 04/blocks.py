@@ -8,6 +8,7 @@ from compas.geometry import scale_vector
 from compas.geometry import offset_polygon
 from compas.geometry import intersection_line_plane
 from compas.utilities import pairwise
+import json
 
 # ==============================================================================
 # Set the path to the input file.
@@ -17,6 +18,7 @@ from compas.utilities import pairwise
 
 HERE = os.path.dirname(__file__)
 FILE_I = os.path.join(HERE, 'cablenet.json')
+FILE_O = os.path.join(HERE, 'blocks.json')
 
 # ==============================================================================
 # Make a cablenet.
@@ -91,8 +93,17 @@ for fkey in cablenet.faces():
 artist = MeshArtist(None, layer="FOFIN:Blocks")
 artist.clear_layer()
 
+# overwrite the output json file
+open(FILE_O, 'w').close()
+
 for mesh in blocks:
     artist.mesh = mesh
     artist.draw_faces(join_faces=True, color=(0, 255, 255))
     artist.draw_vertexlabels()
+
+    # Serialise the meshes into a json file. each block start from a new line.
+    with open(FILE_O, 'a+') as fp:
+        json.dump(mesh.data, fp)
+        fp.write('\n')
+
 
