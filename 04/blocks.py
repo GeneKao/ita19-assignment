@@ -30,7 +30,7 @@ cablenet = Cablenet.from_json(FILE_I)
 # Note that you could also just flip the cycles once and update the JSON file.
 # ==============================================================================
 
-mesh_...(cablenet)
+mesh_flip_cycles(cablenet)
 
 # ==============================================================================
 # Set the value of the thickness of the foam blocks in [m].
@@ -50,12 +50,12 @@ blocks = []
 for fkey in cablenet.faces():
     
     vertices = cablenet.face_vertices(fkey)
-    points = ...
+    points = cablenet.get_vertices_attributes('xyz', keys=vertices)
 
     # the edges of the bottom face polygon have to be offset to create space
     # for the ribs.
 
-    bottom = ...
+    bottom = offset_polygon(points[:], OFFSET)
 
     # the vertices of the top face are the intersection points of the face normal
     # placed at each (offset) bottom vertex and a plane perpendicular to the 
@@ -63,22 +63,22 @@ for fkey in cablenet.faces():
     # face centroid.
 
     # define the plane
-    origin = ...
-    normal = ...
-    plane = add_vectors(origin, ...), normal
+    origin = cablenet.face_centroid(fkey)
+    normal = cablenet.face_normal(fkey, unitized=True)
+    plane = add_vectors(origin, scale_vector(normal, THICKNESS)), normal
 
     top = []
     for a in bottom:
-        b = ...
-        ... = intersection_line_plane(...)
-        top.append(...)
+        b = add_vectors(a, normal)
+        xyz = intersection_line_plane((a, b), plane)
+        top.append(xyz)
 
-    top[:] = ...
+    top[:] = offset_polygon(top, OFFSET)
 
-    vertices = ... + ...
-    faces = [[0, 3, 2, 1], ..., [3, 0, 4, 7], [2, 3, 7, 6], [1, 2, 6, 5], [0, 1, 5, 4]]
+    vertices = bottom + top
+    faces = [[0, 3, 2, 1], [4, 5, 6, 7], [3, 0, 4, 7], [2, 3, 7, 6], [1, 2, 6, 5], [0, 1, 5, 4]]
 
-    block = Mesh.from_...(...)
+    block = Mesh.from_vertices_and_faces(vertices, faces)
 
     blocks.append(block)
 
@@ -88,8 +88,11 @@ for fkey in cablenet.faces():
 # shaded result. Also draw the vertex labels tovisualize the cycle directions.
 # ==============================================================================
 
-artist = MeshArtist(None, layer="...")
+artist = MeshArtist(None, layer="FOFIN:Blocks")
 artist.clear_layer()
 
 for mesh in blocks:
-    ...
+    artist.mesh = mesh
+    artist.draw_faces(join_faces=True, color=(0, 255, 255))
+    artist.draw_vertexlabels()
+

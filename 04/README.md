@@ -1,6 +1,10 @@
 # Structural Design: Assignment 2
 
+> submitted by Gene Ting-Chun Kao (kao@arch.ethz.ch)
+
 ## KnitCandela: Formwork for concrete ribs
+
+Solution: [blocks.py](blocks.py)
 
 * template: `blocks.py` (to be completed)
 * input: `cablenet.json` (to be generated)
