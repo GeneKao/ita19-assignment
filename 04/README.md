@@ -24,8 +24,8 @@ Result
 
 ## Texas Shell: Boundary structure
 
-* template: no template (start from scratch)
-* input: `cablenet.json` (to be generated)
+* solution: [boundary.py](task2/boundary.py) 
+* input: [cablenet.json](task2/cablenet.json)
 
 The mesh surface defined in `cablenet.json` represents the bottom layer of the flexible formwork. On top of that a layer of concrete will be applied that will form the shell.
 
@@ -36,3 +36,7 @@ The task of this part of the assignment is to generate the boundary structure th
 The boundary structure should be placed at least 0.2m away from the boundary of the shell structure. The connection points for the cables should lie along the direction of the reaction forces.
 
 Finally, the beams should be sized such that the cables go through the front and back face of the beam only, not through the faces on top and bottom.
+
+
+Result
+![](img/task2.jpg)
