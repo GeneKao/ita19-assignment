@@ -4,11 +4,10 @@
 
 ## KnitCandela: Formwork for concrete ribs
 
-Solution: [blocks.py](blocks.py)
 
-* template: `blocks.py` (to be completed)
-* input: `cablenet.json` (to be generated)
-* output: `blocks.json` (to be generated)
+* solution: [blocks.py](blocks.py) 
+* input: [cablenet.json](cablenet.json)
+* output: [blocks.json](blocks.json)
 
 The mesh surface defined in `cablenet.json` represents the bottom layer of the flexible formwork. On top of that there will be concrete ribs along the edges of the mesh and finally a continuous concrete surface that forms the outer shell.
 
@@ -19,6 +18,9 @@ The task of this part of te assignment is to generate the formwork for the ribs.
 The blocks should be slighty tapered. Therefore, you will have to offset not only the bottom polygon to create the gap for the ribs, but also the polygon on the top to create the tapering.
 
 Each block volume should be created as an individual mesh. The meshes have to be visualised in Rhino and the list of meshes serialised to a JSON file.
+
+Result
+![](img/task1.jpg)
 
 ## Texas Shell: Boundary structure
 
