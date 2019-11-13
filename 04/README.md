@@ -5,9 +5,9 @@
 ## KnitCandela: Formwork for concrete ribs
 
 
-* solution: [blocks.py](blocks.py) 
-* input: [cablenet.json](cablenet.json)
-* output: [blocks.json](blocks.json)
+* solution: [blocks.py](task1/blocks.py) 
+* input: [cablenet.json](task1/cablenet.json)
+* output: [blocks.json](task1/blocks.json)
 
 The mesh surface defined in `cablenet.json` represents the bottom layer of the flexible formwork. On top of that there will be concrete ribs along the edges of the mesh and finally a continuous concrete surface that forms the outer shell.
 
