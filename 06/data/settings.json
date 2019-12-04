@@ -1,0 +1,140 @@
+{
+    "brick": {
+        "_source": {
+            "data": {
+                "frame": {
+                    "point": [
+                        -0.03,
+                        -0.015,
+                        0.0
+                    ],
+                    "xaxis": [
+                        1.0,
+                        0.0,
+                        0.0
+                    ],
+                    "yaxis": [
+                        0.0,
+                        1.0,
+                        0.0
+                    ]
+                },
+                "xsize": 0.06,
+                "ysize": 0.03,
+                "zsize": 0.014
+            },
+            "dtype": "compas.geometry.primitives.shapes.box/Box"
+        },
+        "frame": {
+            "point": [
+                0.0,
+                0.0,
+                0.014
+            ],
+            "xaxis": [
+                1.0,
+                0.0,
+                0.0
+            ],
+            "yaxis": [
+                0.0,
+                1.0,
+                0.0
+            ]
+        }
+    },
+    "brick_dimensions": [
+        0.06,
+        0.03,
+        0.014
+    ],
+    "halfbrick": {
+        "_source": {
+            "data": {
+                "frame": {
+                    "point": [
+                        -0.015,
+                        -0.015,
+                        0.0
+                    ],
+                    "xaxis": [
+                        1.0,
+                        0.0,
+                        0.0
+                    ],
+                    "yaxis": [
+                        0.0,
+                        1.0,
+                        0.0
+                    ]
+                },
+                "xsize": 0.03,
+                "ysize": 0.03,
+                "zsize": 0.014
+            },
+            "dtype": "compas.geometry.primitives.shapes.box/Box"
+        },
+        "frame": {
+            "point": [
+                0.0,
+                0.0,
+                0.014
+            ],
+            "xaxis": [
+                1.0,
+                0.0,
+                0.0
+            ],
+            "yaxis": [
+                0.0,
+                1.0,
+                0.0
+            ]
+        }
+    },
+    "start_configuration": {
+        "types": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+        ],
+        "values": [
+            -6.027,
+            4.443,
+            -2.313,
+            5.724,
+            1.571,
+            -2.885
+        ]
+    },
+    "picking_frame": {
+        "point": [
+            -0.43,
+            0.0,
+            0.014
+        ],
+        "xaxis": [
+            1.0,
+            0.0,
+            0.0
+        ],
+        "yaxis": [
+            0.0,
+            1.0,
+            0.0
+        ]
+    },
+    "savelevel_vector": [
+        0.0,
+        0.0,
+        0.05
+    ],
+    "tolerance_vector": [
+        0.0,
+        0.0,
+        0.001
+    ]
+}
