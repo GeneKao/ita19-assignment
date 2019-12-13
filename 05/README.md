@@ -6,6 +6,8 @@
 1. Create a `Projection` (can be orthogonal, parallel or perspective) and project the box' vertices onto the xy-plane.
 1. Draw the edges of the projected box corners with an `Artist` of your preference. (tip: `Mesh` will help you there...)
 
+Code: [task1.ipynb](task1.ipynb)
+
 <div align="center"><br><img src="./img/task1_perspective.png" width="600" /></div>
 <div align="center"><br><img src="./img/task1_lines.png" width="600" /></div>
 
@@ -18,4 +20,7 @@
 
 You can reuse code from `06_build_your_own_robot.py` in this repository.
 
-<div align="center"><br><img src="https://github.com/compas-ITA19/ITA19/blob/master/modules/module2/images/assignment1_2.jpg" width="600" /></div>
+
+Code: [my_robot.py](my_robot.py)
+
+<div align="center"><br><img src="./img/myrobot.jpg" width="600" /></div>
