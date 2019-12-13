@@ -8,9 +8,13 @@ Choose strategies for reducing the weight of the part or increasing its strength
 
 ## Required Hand-ins
 
-Please upload to github:
-- the **jupyter notebook** with the ipyvolume viewers embedded
-- a **sketch** like the one below that shows the entire structure for context. It can be as random as this, no need to first create an actual architectural design
-- ![spaceframe](spaceframe.png)
-- indicate the node you choose to model
-- an `*.obj` file of the final mesh (using `utilities > export_ipv_mesh()`)
+[**jupyter notebook**](spaceframe_shell.ipynb)
+
+[**obj file**](space_frame_structure.obj)
+
+<div align="center"><br><img src="./img/frames.png" width="600" /></div>
+
+<div align="center"><br><img src="./img/structure.jpg" width="600" /></div>
+
+
+
