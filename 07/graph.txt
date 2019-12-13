@@ -1,0 +1,32 @@
+graph G {
+  rankdir=LR;
+  node[shape=box];
+  sphere_head1 -- smoothunion1;
+  sphere_head2 -- smoothunion1;
+  sphere_eye1 -- smoothsubtraction1;
+  smoothunion1 -- smoothsubtraction1;
+  right_hand1 -- smoothunion2;
+  right_hand2 -- smoothunion2;
+  right_hand3 -- smoothunion2;
+  smoothunion2 -- right_hand;
+  right_leg1 -- smoothunion3;
+  right_leg2 -- smoothunion3;
+  right_leg3 -- smoothunion3;
+  right_leg4 -- smoothunion3;
+  right_leg5 -- smoothunion3;
+  smoothunion3 -- right_leg
+  right_hand -- mirror;
+  right_leg -- mirror;
+  right_ear_cylinder1 -- subtraction1;
+  right_ear_cylinder2 -- subtraction1;
+  subtraction1 -- right_ear;
+  right_ear -- mirror;
+  mirror -- union;
+  union -- smoothunion4;
+  smoothsubtraction1 -- shell;
+  shell -- smoothunion4;
+  cylinder_mouth1 -- subtraction3;
+  cylinder_mouth2 -- subtraction3;
+  smoothunion4 -- smoothsubtraction2;
+  subtraction3 -- smoothsubtraction2;
+}

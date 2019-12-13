@@ -11,9 +11,8 @@ The result can also just be "inspired by" a real world object and be the result 
 
 ## Required Handins
 
-Please upload to github:
-- the _jupyter notebook_ with the ipyvolume viewers embedded.
-- a _diagram_ like the one below that illustrates the logic of your CSG tree
-  - ![diagram](diagram.png)
-  - create it with the drawing tool of your choice or use somethong like [Graphviz](http://bit.ly/33xAcjF) for it
-- an _*.obj_ file of the final mesh (using `utilities > export_ipv_mesh()`)
+[**jupyter notebook**](MU_mike_volumetric.ipynb)
+
+[**obj file**](MU-mike.obj)
+
+![diagram](graphviz.svg)
